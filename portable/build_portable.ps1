@@ -88,8 +88,12 @@ if (Test-Path $pythonExe) {
     }
 
     New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
+    # Prefer the Windows builtin bsdtar: a GNU tar earlier in PATH (e.g. Git Bash)
+    # misreads "D:\..." as a remote host spec ("Cannot connect to D:").
+    $tarExe = Join-Path $env:SystemRoot "System32\tar.exe"
+    if (-not (Test-Path $tarExe)) { $tarExe = "tar" }
     Write-Info "Extracting to $OutputDir (top-level 'python/' folder)..."
-    tar -xzf $archive -C $OutputDir
+    & $tarExe -xzf $archive -C $OutputDir
     if ($LASTEXITCODE -ne 0) { throw "tar extraction failed (exit $LASTEXITCODE)." }
     if (-not (Test-Path $pythonExe)) { throw "python.exe not found after extraction." }
     Write-Info (& $pythonExe --version)
