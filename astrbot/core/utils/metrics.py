@@ -11,6 +11,7 @@ import aiohttp
 
 from astrbot.core import db_helper, logger
 from astrbot.core.config import VERSION
+from astrbot.core.utils.astrbot_path import get_astrbot_data_path
 
 
 class Metric:
@@ -42,7 +43,7 @@ class Metric:
         if Metric._iid_cache is not None:
             return Metric._iid_cache
 
-        config_dir = os.path.join(os.path.expanduser("~"), ".astrbot")
+        config_dir = get_astrbot_data_path()
         id_file = os.path.join(config_dir, ".installation_id")
 
         if os.path.exists(id_file):
