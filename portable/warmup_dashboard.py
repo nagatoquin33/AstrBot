@@ -23,7 +23,7 @@ def main() -> int:
     os.environ["ASTRBOT_ROOT"] = str(root)
     sys.path.insert(0, str(root))
 
-    for sub in ("config", "plugins", "temp", "system", "knowledge_base", "site-packages"):
+    for sub in ("config", "plugins", "temp/system", "knowledge_base", "site-packages"):
         (root / "data" / sub).mkdir(parents=True, exist_ok=True)
 
     import runtime_bootstrap
